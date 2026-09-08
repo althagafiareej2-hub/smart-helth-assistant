@@ -1,57 +1,1044 @@
-<!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>مسار | لأن صحتك تهمنا</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/static/style.css"></head>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>مسار | لأن صحتك تهمنا</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+
 <body>
-<div class="shell">
-  <section id="onboarding" class="screen onboarding-screen active-screen">
-    <div class="soft-blob blob-a"></div><div class="soft-blob blob-b"></div>
-    <div class="road-art"><span></span></div>
-    <div class="mobile-frame intro-phone">
-      <div class="phone-notch"></div><div class="phone-status"><span>9:41</span><span>▮▮▮ ◔ ▰</span></div>
-      <div class="phone-content intro-content">
-        <div class="masar-logo"><span class="leaf"></span><b>مسار</b></div>
-        <p class="tagline">لأن صحتك تهمنا</p>
-        <div class="intro-card">صف حالتك الصحية<br><strong>لنبدأ معك..</strong></div>
-        <button class="round-arrow" onclick="showScreen('home')">→</button>
-        <div class="future"><span class="mini-leaf"></span><b>مستقبل صحي يبدأ بخطوة</b></div>
-      </div>
+
+
+<!-- =========================================================
+     التطبيق الرئيسي
+========================================================= -->
+
+<div class="app">
+
+
+    <!-- =====================================================
+         الشاشة الأولى
+    ====================================================== -->
+
+    <section id="onboarding" class="screen active-screen">
+
+        <div class="onboarding-container">
+
+            <div class="logo-box">
+                <div class="logo">مسار</div>
+                <div class="logo-subtitle">
+                    لأن صحتك تهمنا
+                </div>
+            </div>
+
+
+            <div class="welcome-content">
+
+                <h1>
+                    أهلاً بك في مسار
+                </h1>
+
+                <p>
+                    مساعدك لتنظيم معلوماتك الصحية
+                    قبل زيارة الطبيب
+                </p>
+
+                <button
+                    class="main-btn"
+                    onclick="showScreen('home')">
+
+                    ابدأ الآن
+                    <span>←</span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         الصفحة الرئيسية
+    ====================================================== -->
+
+    <section id="home" class="screen">
+
+        <header class="top-header">
+
+            <div class="brand">
+                <h2>مسار</h2>
+                <span>لأن صحتك تهمنا</span>
+            </div>
+
+        </header>
+
+
+        <div class="home-container">
+
+
+            <div class="hero-section">
+
+                <div class="hero-text">
+
+                    <span class="small-title">
+                        المساعد الصحي الذكي
+                    </span>
+
+                    <h1>
+                        خلّ معلوماتك الصحية
+                        <br>
+                        <strong>مرتبة قبل موعدك</strong>
+                    </h1>
+
+                    <p>
+                        اكتب الأعراض التي تشعر بها،
+                        وسيساعدك مسار على تنظيم المعلومات
+                        المهمة لعرضها على الطبيب.
+                    </p>
+
+
+                    <button
+                        class="main-btn"
+                        onclick="showScreen('analysis')">
+
+                        تحليل الأعراض
+                        <span>←</span>
+
+                    </button>
+
+                </div>
+
+
+                <div class="hero-card">
+
+                    <div class="hero-icon">
+                        +
+                    </div>
+
+                    <h3>
+                        صحتك أولاً
+                    </h3>
+
+                    <p>
+                        تنظيم المعلومات الصحية
+                        يساعدك على الاستعداد بشكل أفضل
+                        لزيارة الطبيب.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 معلومات الخدمة
+            ================================================== -->
+
+            <div class="info-section">
+
+
+                <div class="info-card">
+
+                    <div class="info-number">
+                        01
+                    </div>
+
+                    <div>
+                        <h3>
+                            اكتب الأعراض
+                        </h3>
+
+                        <p>
+                            اشرح حالتك بطريقة بسيطة
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-number">
+                        02
+                    </div>
+
+                    <div>
+                        <h3>
+                            تحليل وتنظيم
+                        </h3>
+
+                        <p>
+                            يتم تنظيم المعلومات المدخلة
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-number">
+                        03
+                    </div>
+
+                    <div>
+                        <h3>
+                            ملخص للطبيب
+                        </h3>
+
+                        <p>
+                            تحصل على ملخص مرتب للحالة
+                        </p>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         صفحة إدخال الأعراض
+    ====================================================== -->
+
+    <section id="analysis" class="screen">
+
+        <header class="top-header">
+
+            <button
+                class="back-btn"
+                onclick="showScreen('home')">
+
+                ←
+
+            </button>
+
+            <div class="brand">
+
+                <h2>
+                    تحليل الأعراض
+                </h2>
+
+                <span>
+                    مسار
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <div class="analysis-container">
+
+
+            <div class="page-title">
+
+                <span class="small-title">
+                    الخطوة الأولى
+                </span>
+
+                <h1>
+                    صف حالتك الصحية
+                </h1>
+
+                <p>
+                    اكتب المعلومات بالتفصيل قدر الإمكان،
+                    مثل العمر والجنس والأعراض والمدة
+                    والأعراض المصاحبة وعلامات الخطر.
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 صندوق إدخال الحالة
+            ================================================== -->
+
+            <div class="input-card">
+
+
+                <label for="symptoms">
+                    وصف الحالة
+                </label>
+
+
+                <textarea
+                    id="symptoms"
+                    class="big-input"
+                    placeholder="مثال: عمري 20 سنة، أنثى، أعاني من صداع خفيف منذ يوم واحد، والأعراض المصاحبة هي التعب وقلة النوم، ولا توجد علامات خطر."
+                    autocomplete="off"
+                    spellcheck="false"></textarea>
+
+
+                <div class="input-hint">
+
+                    <span>
+                        💡
+                    </span>
+
+                    <span>
+                        يمكنك كتابة الحالة في فقرة واحدة،
+                        وسيقوم مسار بتنظيم المعلومات تلقائياً.
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="main-btn"
+                    onclick="startAnalysis()">
+
+                    ابدأ تحليل الأعراض
+
+                    <span>
+                        ←
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 أمثلة للحالات
+            ================================================== -->
+
+            <div class="examples-section">
+
+                <h3>
+                    أمثلة
+                </h3>
+
+
+                <div class="examples-grid">
+
+
+                    <button
+                        class="example-card"
+                        onclick="useExample(1)">
+
+                        <span>
+                            حالة بسيطة
+                        </span>
+
+                        <small>
+                            صداع وتعب
+                        </small>
+
+                    </button>
+
+
+                    <button
+                        class="example-card"
+                        onclick="useExample(2)">
+
+                        <span>
+                            أعراض متعددة
+                        </span>
+
+                        <small>
+                            التهاب حلق وسعال
+                        </small>
+
+                    </button>
+
+
+                    <button
+                        class="example-card danger-example"
+                        onclick="useExample(3)">
+
+                        <span>
+                            حالة تستدعي الانتباه
+                        </span>
+
+                        <small>
+                            ألم صدر وضيق تنفس
+                        </small>
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         صفحة المعالجة
+    ====================================================== -->
+
+    <section id="processing" class="screen">
+
+
+        <div class="processing-container">
+
+
+            <div class="processing-icon">
+                +
+            </div>
+
+
+            <h1>
+                جاري تحليل المعلومات
+            </h1>
+
+
+            <p>
+                يتم تنظيم المعلومات الصحية المدخلة...
+            </p>
+
+
+            <div class="progress-container">
+
+                <div
+                    id="progressBar"
+                    class="progress-bar">
+                </div>
+
+            </div>
+
+
+            <div class="processing-steps">
+
+
+                <div class="processing-step">
+
+                    <span class="step-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        تحليل الأعراض
+                    </span>
+
+                </div>
+
+
+                <div class="processing-step">
+
+                    <span class="step-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        تحديد مدة الأعراض
+                    </span>
+
+                </div>
+
+
+                <div class="processing-step">
+
+                    <span class="step-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        تحليل الأعراض المصاحبة
+                    </span>
+
+                </div>
+
+
+                <div class="processing-step">
+
+                    <span class="step-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        التحقق من علامات الخطر
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         صفحة الملخص
+    ====================================================== -->
+
+    <section id="summary" class="screen">
+
+
+        <header class="top-header">
+
+            <button
+                class="back-btn"
+                onclick="showScreen('analysis')">
+
+                ←
+
+            </button>
+
+
+            <div class="brand">
+
+                <h2>
+                    ملخص الحالة
+                </h2>
+
+                <span>
+                    مسار
+                </span>
+
+            </div>
+
+        </header>
+
+
+
+        <div class="summary-container">
+
+
+            <div class="page-title">
+
+                <span class="small-title">
+                    نتيجة التنظيم
+                </span>
+
+                <h1>
+                    معلوماتك الصحية
+                </h1>
+
+                <p>
+                    تم تنظيم المعلومات التي أدخلتها
+                    لتكون أوضح وأسهل عند عرضها على الطبيب.
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 بطاقة الملخص
+            ================================================== -->
+
+            <div
+                id="summaryData"
+                class="summary-card">
+
+
+                <div>
+
+                    <span>
+                        العمر / الجنس
+                    </span>
+
+                    <b id="summaryAgeGender">
+                        —
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        الأعراض
+                    </span>
+
+                    <b id="summarySymptoms">
+                        —
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        المدة
+                    </span>
+
+                    <b id="summaryDuration">
+                        —
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        الأعراض المصاحبة
+                    </span>
+
+                    <b id="summaryAssociated">
+                        —
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        علامات الخطر
+                    </span>
+
+                    <b id="summaryDanger">
+                        —
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        المسار المقترح
+                    </span>
+
+                    <b id="summaryPath">
+                        —
+                    </b>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 تنبيه
+            ================================================== -->
+
+            <div class="notice-box">
+
+                <strong>
+                    تنبيه
+                </strong>
+
+                <p>
+                    هذه النتيجة لتنظيم المعلومات والمساندة
+                    وليست تشخيصاً طبياً.
+                    عند وجود أعراض مقلقة، يجب طلب المساعدة
+                    الطبية المناسبة.
+                </p>
+
+            </div>
+
+
+
+            <button
+                class="main-btn"
+                onclick="showScreen('doctor')">
+
+                عرض الملخص للطبيب
+
+                <span>
+                    ←
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         صفحة ملخص الطبيب
+    ====================================================== -->
+
+    <section id="doctor" class="screen">
+
+
+        <header class="top-header">
+
+            <button
+                class="back-btn"
+                onclick="showScreen('summary')">
+
+                ←
+
+            </button>
+
+
+            <div class="brand">
+
+                <h2>
+                    ملخص للطبيب
+                </h2>
+
+                <span>
+                    مسار
+                </span>
+
+            </div>
+
+        </header>
+
+
+
+        <div class="doctor-container">
+
+
+            <div class="page-title">
+
+                <span class="small-title">
+                    معلومات الحالة
+                </span>
+
+                <h1>
+                    ملخص منظم للزيارة
+                </h1>
+
+                <p>
+                    يمكن استخدام هذا الملخص لمساعدة الطبيب
+                    على فهم المعلومات التي تم إدخالها.
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 بيانات الحالة
+            ================================================== -->
+
+            <div
+                id="d3vzuw"
+                class="fields">
+
+
+                <div>
+
+                    <small>
+                        العمر / الجنس
+                    </small>
+
+                    <b id="docAgeGender">
+                        —
+                    </b>
+
+                </div>
+
+
+                <div>
+
+                    <small>
+                        مدة الأعراض
+                    </small>
+
+                    <b id="docDuration">
+                        —
+                    </b>
+
+                </div>
+
+
+                <div class="wide">
+
+                    <small>
+                        الأعراض
+                    </small>
+
+                    <b id="docSymptoms">
+                        —
+                    </b>
+
+                </div>
+
+
+                <div class="wide">
+
+                    <small>
+                        الأعراض المصاحبة
+                    </small>
+
+                    <b id="docAssociated">
+                        —
+                    </b>
+
+                </div>
+
+
+                <div class="wide">
+
+                    <small>
+                        علامات الخطر
+                    </small>
+
+                    <b id="docDanger">
+                        —
+                    </b>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 المسار
+            ================================================== -->
+
+            <div
+                id="mqyfqc"
+                class="route">
+
+                المسار المقترح
+
+                <br>
+
+                <b id="docPath">
+                    تقييم سريري من الطبيب
+                </b>
+
+            </div>
+
+
+
+            <div class="doctor-note">
+
+                <strong>
+                    ملاحظة
+                </strong>
+
+                <p id="doctorSummaryText">
+                    هذه المعلومات تم تنظيمها بناءً
+                    على وصف المستخدم ولا تمثل تشخيصاً طبياً.
+                </p>
+
+            </div>
+
+
+
+            <button
+                class="main-btn"
+                onclick="showScreen('center')">
+
+                الانتقال إلى المراكز والمواعيد
+
+                <span>
+                    ←
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         صفحة المراكز والمواعيد
+    ====================================================== -->
+
+    <section id="center" class="screen">
+
+
+        <header class="top-header">
+
+            <button
+                class="back-btn"
+                onclick="showScreen('doctor')">
+
+                ←
+
+            </button>
+
+
+            <div class="brand">
+
+                <h2>
+                    المراكز والمواعيد
+                </h2>
+
+                <span>
+                    مسار
+                </span>
+
+            </div>
+
+        </header>
+
+
+
+        <div class="center-container">
+
+
+            <div class="page-title">
+
+                <span class="small-title">
+                    الخطوة الأخيرة
+                </span>
+
+                <h1>
+                    اختر ما يناسبك
+                </h1>
+
+                <p>
+                    يمكنك متابعة المعلومات أو الانتقال
+                    إلى خيارات الموعد.
+                </p>
+
+            </div>
+
+
+
+            <div class="center-grid">
+
+
+                <div class="center-card">
+
+                    <div class="center-card-icon">
+                        📍
+                    </div>
+
+                    <h3>
+                        أقرب موعد
+                    </h3>
+
+                    <p>
+                        عرض أقرب موعد متاح.
+                    </p>
+
+                    <button
+                        class="secondary-btn"
+                        onclick="openModal('nearest')">
+
+                        عرض الموعد
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="center-card">
+
+                    <div class="center-card-icon">
+                        📅
+                    </div>
+
+                    <h3>
+                        حجز موعد
+                    </h3>
+
+                    <p>
+                        اختر الموعد المناسب لك.
+                    </p>
+
+                    <button
+                        class="secondary-btn"
+                        onclick="openModal('appointment')">
+
+                        حجز موعد
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         النافذة المنبثقة
+    ====================================================== -->
+
+    <div
+        id="modal"
+        class="modal">
+
+
+        <div class="modal-content">
+
+
+            <button
+                class="modal-close"
+                onclick="closeModal()">
+
+                ×
+
+            </button>
+
+
+            <h2 id="modalTitle">
+                حجز موعد
+            </h2>
+
+
+            <p id="modalText">
+                اختر الموعد المناسب لك.
+            </p>
+
+
+            <button
+                class="main-btn"
+                onclick="confirmAppointment()">
+
+                تأكيد
+
+                <span>
+                    ✓
+                </span>
+
+            </button>
+
+
+        </div>
+
     </div>
-  </section>
 
-  <section id="home" class="screen app-screen">
-    <header class="topbar"><div class="masar-logo"><span class="leaf"></span><b>مسار</b></div><div class="profile"><span>مرحبًا بك</span><i>◉</i></div></header>
-    <main class="mobile-main">
-      <div class="greeting"><span>أهلًا بك في مسار</span><h1>كيف يمكننا مساعدتك اليوم؟</h1></div>
-      <div class="symptom-card" onclick="showScreen('analysis')"><p>صف حالتك الصحية لنبدأ معك..</p><span class="small-arrow">←</span></div>
-      <div class="section-title"><h2>خدمات مسار</h2><span>عرض الكل</span></div>
-      <div class="tiles"><button onclick="openModal('appointment')"><span>◫</span><b>حجز موعد</b><small>اختر الموعد المناسب</small></button><button onclick="showScreen('analysis')"><span>◉</span><b>التقييم الصحي</b><small>تحليل أولي للأعراض</small></button><button onclick="openModal('nearest')"><span>⌖</span><b>أقرب موعد</b><small>اعرف موعدك القادم</small></button></div>
-      <div class="section-title"><h2>موعدك القادم</h2><span>المواعيد</span></div>
-      <div class="appointment"><div class="cal"><b>15</b><small>سبتمبر</small></div><div><b>عيادة الطب العام</b><small>مركز الرعاية الصحية</small><small>10:30 صباحًا</small></div><em>مؤكد</em></div>
-      <div class="doctor-tip"><span>✚</span><div><b>ذكاء اصطناعي مساعد</b><p>القرار دائمًا للطبيب — مسار يساعد على تنظيم المعلومات قبل الموعد.</p></div></div>
-    </main>
-    <nav class="bottom-nav"><button class="active">⌂<small>الرئيسية</small></button><button onclick="showScreen('analysis')">◌<small>التقييم</small></button><button onclick="showScreen('summary')">▣<small>ملخصي</small></button><button onclick="showScreen('doctor')">☰<small>المزيد</small></button></nav>
-  </section>
 
-  <section id="analysis" class="screen app-screen">
-    <header class="topbar"><button class="back" onclick="showScreen('home')">→</button><div class="masar-logo"><span class="leaf"></span><b>مسار</b></div><span></span></header>
-    <main class="mobile-main analysis-page">
-      <div class="progress-head"><span>التقييم الصحي</span><b>1 من 3</b></div><div class="progress-line"><i></i></div>
-      <h1>صف حالتك الصحية</h1><p class="muted">اكتب ما تشعر به بالتفصيل، وسنساعدك في ترتيب المعلومات قبل الموعد.</p>
-      <textarea id="symptoms" class="big-input" placeholder="مثال: أشعر بكحة منذ يومين مع حرارة خفيفة واحتقان.."></textarea>
-      <button class="main-btn" onclick="startAnalysis()">ابدأ تحليل الأعراض <span>←</span></button>
-      <p class="privacy">🔒 المعلومات للمساندة ولا تُعد تشخيصًا طبيًا.</p>
-    </main>
-  </section>
-
-  <section id="processing" class="screen app-screen"><header class="topbar"><div class="masar-logo"><span class="leaf"></span><b>مسار</b></div></header><main class="mobile-main center-page">
-    <div class="brain">✦</div><h1>جاري تحليل الأعراض ..</h1><p class="muted">نرتب المعلومات الصحية خطوة بخطوة</p><div class="big-progress"><i id="progressBar"></i></div>
-    <div class="checklist"><div>تحليل الأعراض <b>✓</b></div><div>تحديد المدة <b>✓</b></div><div>مراجعة الأعراض المصاحبة <b>✓</b></div><div>تقييم علامات الخطر <b>✓</b></div></div>
-  </main></section>
-
-  <section id="summary" class="screen app-screen"><header class="topbar"><button class="back" onclick="showScreen('home')">→</button><div class="masar-logo"><span class="leaf"></span><b>مسار</b></div><span></span></header><main class="mobile-main"><div class="summary-title"><span>قبل الموعد</span><h1>ملخص الحالة</h1></div><div id="summaryData" class="summary-card"><div><span>العمر / الجنس</span><b>—</b></div><div><span>الأعراض</span><b>—</b></div><div><span>المدة</span><b>—</b></div><div><span>الأعراض المصاحبة</span><b>—</b></div><div><span>علامات الخطر</span><b>لم يتم رصدها في التقييم الأولي</b></div><div><span>المسار المقترح</span><b>مراجعة الطبيب حسب الحالة</b></div></div><button class="main-btn" onclick="showScreen('doctor')">عرض للطبيب <span>←</span></button></main></section>
-
-  <section id="doctor" class="screen desktop-screen"><aside class="side"><div class="masar-logo"><span class="leaf"></span><b>مسار</b></div><a class="selected">⌂ المرضى</a><a>◫ المواعيد</a><a>✉ الرسائل</a><a>▤ التقارير</a><div class="side-footer">المساعد الصحي الذكي<br><small>القرار دائمًا للطبيب</small></div></aside><main class="desktop-main"><div class="desk-head"><div><span>الطبيب / عيادة الطب العام</span><h1>ملخص الحالة</h1></div><button onclick="showScreen('center')">رؤية المركز الصحي ←</button></div><div class="case-grid"><div class="case-card"><h2>قبل الموعد</h2><div class="patient-row"><div class="avatar">م</div><div><b>مريض جديد</b><small>تم إنشاء الملخص تلقائيًا</small></div></div><div class="fields"><div><small>العمر / الجنس</small><b>—</b></div><div><small>مدة الأعراض</small><b id="docDuration">—</b></div><div class="wide"><small>الأعراض</small><b id="docSymptoms">—</b></div><div class="wide"><small>الأعراض المصاحبة</small><b>تم تنظيمها من وصف المريض</b></div></div></div><div class="doctor-note"><h3>ملاحظات مسار</h3><p>هذا الملخص للمساعدة في تجهيز الزيارة، ولا يمثل تشخيصًا طبيًا.</p><div class="route">المسار المقترح<br><b>تقييم سريري من الطبيب</b></div></div></div></main></section>
-
-  <section id="center" class="screen desktop-screen"><aside class="side"><div class="masar-logo"><span class="leaf"></span><b>مسار</b></div><a class="selected">⌂ الرئيسية</a><a>◉ رؤية المركز</a><a>● التنبيهات</a><a>▤ التقارير</a></aside><main class="desktop-main center-dashboard"><div class="desk-head"><div><span>لوحة المركز الصحي</span><h1>نظرة عامة</h1></div><select><option>آخر 14 يوم</option></select></div><div class="kpis"><div><span>إجمالي الحالات</span><b>128</b><small>خلال الفترة</small></div><div><span>الحالات ذات الأولوية</span><b>24</b><small>تحتاج متابعة</small></div><div><span>متوسط الحالات اليومية</span><b>9.1</b><small>حالة</small></div></div><div class="dashboard-card"><div class="card-head"><div><h2>اتجاهات الأعراض في المركز الصحي</h2><p>مقارنة الفترة الحالية بالفترة السابقة</p></div><span class="legend"><i></i> الفترة الحالية &nbsp; <em></em> الفترة السابقة</span></div><div class="chart"><div class="y">40<br><br>30<br><br>20<br><br>10<br><br>0</div><svg viewBox="0 0 700 250" preserveAspectRatio="none"><path class="prev" d="M0 185 C70 175 90 195 150 155 S245 180 310 125 S410 155 470 100 S580 125 700 80"/><path class="current" d="M0 210 C70 190 90 175 150 165 S245 145 310 135 S410 120 470 80 S580 95 700 35"/><circle cx="470" cy="80" r="5"/></svg></div></div><div class="alert-box"><span>!</span><div><b>توقع ارتفاع في الحالات</b><p>تشير الاتجاهات الحالية إلى زيادة محتملة في الحالات خلال الأيام القادمة.</p></div><button>عرض التفاصيل</button></div></main></section>
 </div>
-<div id="modal" class="modal"><div class="modal-box"><button onclick="closeModal()">×</button><div class="modal-icon">◫</div><h2 id="modalTitle">حجز موعد</h2><p id="modalText">اختر الموعد المناسب لك.</p><div class="slot"><b>الثلاثاء 15 سبتمبر</b><span>10:30 صباحًا</span></div><button class="main-btn" onclick="confirmAppointment()">تأكيد الموعد</button></div></div>
-<script src="/static/script.js"></script></body></html>
+
+
+
+<!-- =========================================================
+     JavaScript
+========================================================= -->
+
+<script src="/static/script.js"></script>
+
+
+</body>
+
+</html>
