@@ -8,45 +8,62 @@ import re
 def normalize_text(text):
     text = text.strip()
     text = text.replace('أ', 'ا').replace('إ', 'ا').replace('آ', 'ا')
+    text = text.replace('ة', 'ه')
     text = re.sub(r'[\u064B-\u065F\u0670]', '', text)
     return re.sub(r'\s+', ' ', text)
 
 
 # =========================================================
-# استخراج العمر
+# العمر
 # =========================================================
 
 def extract_age(text):
-    m = re.search(r'(?:عمري|العمر)\s*(\d+)', text)
+    patterns = [
+        r'عمري\s*(\d+)',
+        r'العمر\s*[:：]?\s*(\d+)',
+        r'عمره\s*(\d+)',
+        r'عمرها\s*(\d+)'
+    ]
 
-    if m:
-        return int(m.group(1))
+    for pattern in patterns:
+        match = re.search(pattern, text)
+        if match:
+            return int(match.group(1))
 
     return None
 
 
 # =========================================================
-# استخراج الجنس
+# الجنس
 # =========================================================
 
 def extract_gender(text):
-    if any(x in text for x in ['انثى', 'بنت', 'فتاه', 'امرأه', 'امراه']):
+    if any(x in text for x in [
+        'انثى',
+        'بنت',
+        'فتاه',
+        'امراه',
+        'امرأه'
+    ]):
         return 'أنثى'
 
-    if any(x in text for x in ['ذكر', 'ولد', 'رجل']):
+    if any(x in text for x in [
+        'ذكر',
+        'ولد',
+        'رجل'
+    ]):
         return 'ذكر'
 
     return 'غير محدد'
 
 
 # =========================================================
-# استخراج الأعراض
+# الأعراض
 # =========================================================
 
 def extract_symptoms(text):
 
-    symptoms_dict = {
-
+    symptoms = {
         'صداع': [
             'صداع',
             'وجع راس',
@@ -218,18 +235,26 @@ def extract_symptoms(text):
             'تنمل',
             'يدي مخدره',
             'رجلي مخدره'
+        ],
+
+        'قلة النوم': [
+            'قلة النوم',
+            'قله النوم',
+            'ما انام كويس',
+            'لا انام جيدا',
+            'قلة نوم'
         ]
     }
 
     return [
-        symptom
-        for symptom, keywords in symptoms_dict.items()
+        name
+        for name, keywords in symptoms.items()
         if any(keyword in text for keyword in keywords)
     ]
 
 
 # =========================================================
-# استخراج مدة الأعراض
+# المدة
 # =========================================================
 
 def extract_duration(text):
@@ -239,9 +264,9 @@ def extract_duration(text):
         (r'لي\s+يومين', 'يومان'),
         (r'منذ\s+ثلاثة\s+ايام', '3 أيام'),
         (r'منذ\s+ثلاث\s+ايام', '3 أيام'),
+        (r'منذ\s+اسبوعين', 'أسبوعان'),
         (r'منذ\s+اسبوع', 'أسبوع'),
         (r'لي\s+اسبوع', 'أسبوع'),
-        (r'منذ\s+اسبوعين', 'أسبوعان'),
         (r'منذ\s+شهر', 'شهر'),
         (r'منذ\s+ساعه', 'ساعة'),
         (r'منذ\s+ساعة', 'ساعة')
@@ -270,18 +295,18 @@ def extract_duration(text):
 
 
 # =========================================================
-# استخراج شدة الأعراض
+# شدة الأعراض
 # =========================================================
 
 def extract_severity(text):
 
     if any(x in text for x in [
         'شديد جدا',
-        'شديدة جدا',
+        'شديده جدا',
         'شديد',
-        'شديدة',
+        'شديده',
         'قوي جدا',
-        'قوية جدا',
+        'قويه جدا',
         'غير محتمل',
         'ما اقدر',
         'لا استطيع',
@@ -291,16 +316,18 @@ def extract_severity(text):
 
     if any(x in text for x in [
         'متوسط',
-        'متوسطة',
         'متوسطه',
+        'متوسطة',
         'متوسطا'
     ]):
         return 'متوسطة'
 
     if any(x in text for x in [
         'خفيف',
+        'خفيفه',
         'خفيفة',
         'بسيط',
+        'بسيطه',
         'بسيطة'
     ]):
         return 'خفيفة'
@@ -309,7 +336,22 @@ def extract_severity(text):
 
 
 # =========================================================
-# تحديد علامات الخطر
+# الأعراض المصاحبة
+# =========================================================
+
+def extract_associated_symptoms(symptoms):
+
+    associated = []
+
+    for symptom in symptoms:
+        if symptom not in associated:
+            associated.append(symptom)
+
+    return associated
+
+
+# =========================================================
+# علامات الخطر
 # =========================================================
 
 def detect_danger_signs(text):
@@ -319,6 +361,7 @@ def detect_danger_signs(text):
     if any(x in text for x in [
         'ضيق التنفس',
         'ضيق نفس',
+        'نفسي ضيق',
         'صعوبه التنفس',
         'صعوبه في التنفس',
         'ما اقدر اتنفس',
@@ -338,8 +381,8 @@ def detect_danger_signs(text):
 
     if any(x in text for x in [
         'نزيف شديد',
-        'ينزف كثيرا',
-        'نزيف قوي'
+        'نزيف قوي',
+        'ينزف كثيرا'
     ]):
         danger_signs.append('نزيف شديد')
 
@@ -354,10 +397,31 @@ def detect_danger_signs(text):
 
 
 # =========================================================
-# تحديد المسار المقترح
+# تحديد المسار
 # =========================================================
 
-def determine_path(priority):
+def determine_priority(danger_signs, symptoms):
+
+    if danger_signs:
+        return 'high'
+
+    if len(symptoms) >= 2:
+        return 'medium'
+
+    return 'low'
+
+
+def get_priority_ar(priority):
+
+    return {
+        'high': 'عالية',
+        'medium': 'متوسطة',
+        'low': 'منخفضة',
+        'unknown': 'غير محددة'
+    }.get(priority, 'غير محددة')
+
+
+def get_recommended_path(priority):
 
     if priority == 'high':
         return (
@@ -372,13 +436,13 @@ def determine_path(priority):
         )
 
     return (
-        'مسار الرعاية الذاتية والمتابعة: الراحة ومراقبة الأعراض، '
-        'مع استشارة الطبيب عند استمرارها أو تفاقمها.'
+        'مسار الرعاية الذاتية والمتابعة: مراقبة الأعراض '
+        'والاهتمام بالراحة، مع استشارة الطبيب عند استمرارها أو تفاقمها.'
     )
 
 
 # =========================================================
-# تحليل الحالة
+# التحليل الرئيسي
 # =========================================================
 
 def analyze_symptoms(text):
@@ -395,54 +459,39 @@ def analyze_symptoms(text):
             'severity': 'غير محددة',
             'priority': 'unknown',
             'priority_ar': 'غير محددة',
-            'recommended_path': 'لا يمكن تحديد المسار قبل إدخال البيانات.',
+            'recommended_path': 'لم يتم تحديد المسار.',
             'doctor_summary': 'لم يتم إدخال وصف للحالة.',
-            'note': 'هذه النتيجة للدراسة والمساندة ولا تُعد تشخيصًا طبيًا.'
+            'note': 'هذه النتيجة للدراسة والمساندة ولا تعد تشخيصًا طبيًا.'
         }
 
+    original_text = text
     text = normalize_text(text)
 
     age = extract_age(text)
     gender = extract_gender(text)
+
     symptoms = extract_symptoms(text)
     duration = extract_duration(text)
     severity = extract_severity(text)
     danger_signs = detect_danger_signs(text)
 
-    # =====================================================
-    # تحديد الأعراض المصاحبة
-    # =====================================================
-
-    associated_symptoms = []
-
+    # الأعراض المصاحبة:
+    # جميع الأعراض الإضافية غير أول عرض رئيسي
     if len(symptoms) > 1:
         associated_symptoms = symptoms[1:]
-
-    # =====================================================
-    # تحديد مستوى الأولوية
-    # =====================================================
-
-    if danger_signs:
-        priority = 'high'
-        priority_ar = 'عالية'
-
-    elif len(symptoms) >= 2:
-        priority = 'medium'
-        priority_ar = 'متوسطة'
-
     else:
-        priority = 'low'
-        priority_ar = 'منخفضة'
+        associated_symptoms = []
 
-    # =====================================================
-    # المسار المقترح
-    # =====================================================
+    priority = determine_priority(
+        danger_signs,
+        symptoms
+    )
 
-    recommended_path = determine_path(priority)
+    priority_ar = get_priority_ar(priority)
 
-    # =====================================================
-    # تجهيز النص النهائي
-    # =====================================================
+    recommended_path = get_recommended_path(priority)
+
+    age_text = str(age) if age is not None else 'غير محدد'
 
     symptoms_text = (
         '، '.join(symptoms)
@@ -462,49 +511,37 @@ def analyze_symptoms(text):
         else 'لا توجد علامات خطر واضحة'
     )
 
-    age_text = (
-        str(age)
-        if age is not None
-        else 'غير محدد'
-    )
+    # =====================================================
+    # الملخص الذي سيظهر للطبيب
+    # =====================================================
 
-    summary = (
-        f'العمر: {age_text}. '
-        f'الجنس: {gender}. '
-        f'الأعراض: {symptoms_text}. '
-        f'المدة: {duration}. '
-        f'الأعراض المصاحبة: {associated_text}. '
-        f'علامات الخطر: {danger_text}. '
-        f'مستوى الأولوية: {priority_ar}. '
+    doctor_summary = (
+        f'العمر: {age_text}\n'
+        f'الجنس: {gender}\n'
+        f'الأعراض: {symptoms_text}\n'
+        f'المدة: {duration}\n'
+        f'الأعراض المصاحبة: {associated_text}\n'
+        f'علامات الخطر: {danger_text}\n'
+        f'الشدة: {severity}\n'
+        f'مستوى الأولوية: {priority_ar}\n'
         f'المسار المقترح: {recommended_path}'
     )
 
     return {
-
         'age': age,
-
         'gender': gender,
-
         'detected_symptoms': symptoms,
-
         'duration': duration,
-
         'associated_symptoms': associated_symptoms,
-
         'danger_signs': danger_signs,
-
         'severity': severity,
-
         'priority': priority,
-
         'priority_ar': priority_ar,
-
         'recommended_path': recommended_path,
-
-        'doctor_summary': summary,
-
+        'doctor_summary': doctor_summary,
+        'original_text': original_text,
         'note': (
             'هذه النتيجة مخصصة للدراسة واختبار الموقع '
-            'ولا تُعد تشخيصًا طبيًا.'
+            'ولا تعد تشخيصًا طبيًا.'
         )
     }
