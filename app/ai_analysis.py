@@ -48,4 +48,3 @@ def analyze_symptoms(text):
     st='، '.join(symptoms) if symptoms else 'لم يتم التعرف على أعراض محددة'
     summary=f'الأعراض المرصودة: {st}. مدة الأعراض: {duration}. الشدة المذكورة: {severity}. الأولوية المقترحة: {p}. يوصى بالتقييم السريري من قبل الطبيب.'
     return {'detected_symptoms':symptoms,'duration':duration,'severity':severity,'priority':priority,'doctor_summary':summary,'note':'هذه النتيجة للمساندة ولا تُعد تشخيصًا طبيًا.'}
-
