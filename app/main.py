@@ -42,4 +42,3 @@ def patterns():
         old=pc.get(s,0)
         if n>=3 and n>old: alerts.append({'symptom':s,'recent_cases':n,'previous_cases':old,'increase':n-old,'message':f'لوحظ ارتفاع في حالات {s}'})
     return {'total_cases':len(cases),'recent_cases':len(recent),'previous_cases':len(previous),'recent_symptom_frequency':rc,'previous_symptom_frequency':pc,'alerts':alerts,'note':'هذه المؤشرات للمساندة ورصد الأنماط الصحية وليست تشخيصًا طبيًا.'}
-
