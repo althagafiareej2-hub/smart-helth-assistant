@@ -1,352 +1,114 @@
-// ============================================================
-// بيانات آخر تحليل
-// ============================================================
+let lastAnalysis = {symptoms:"", result:null};
 
-let lastAnalysis = {
-    text: '',
-    age: 'غير محدد',
-    gender: 'غير محدد',
-    symptoms: '—',
-    duration: 'غير محددة',
-    associatedSymptoms: 'لا توجد أعراض مصاحبة محددة',
-    dangerSigns: 'لا توجد علامات خطر واضحة',
-    priority: 'غير محددة',
-    path: 'مراجعة الطبيب حسب الحالة'
-};
+const examples = [
+"عمري 22 سنة، أنثى، أعاني من صداع خفيف منذ يومين مع تعب وقلة نوم، ولا توجد علامات خطر.",
+"عمري 45 سنة، ذكر، أعاني من ألم في الصدر وضيق في التنفس منذ ساعتين، مع تعرق ودوخة، وأشعر أن الألم يزداد.",
+"عمري 8 سنوات، أنثى، أعاني من حرارة وسعال منذ يومين مع احتقان الحلق، ولا توجد صعوبة في التنفس أو علامات خطر."
+];
 
-
-// ============================================================
-// التنقل بين الشاشات
-// ============================================================
-
-function showScreen(id) {
-
-    document
-        .querySelectorAll('.screen')
-        .forEach(screen => {
-            screen.classList.remove('active-screen');
-        });
-
-    const element = document.getElementById(id);
-
-    if (element) {
-        element.classList.add('active-screen');
-    }
-
-    window.scrollTo(0, 0);
+function showScreen(id){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active-screen"));
+    const el=document.getElementById(id);
+    if(el) el.classList.add("active-screen");
+    window.scrollTo(0,0);
 }
 
+function loadExample(i){
+    const input=document.getElementById("symptoms");
+    if(input){
+        input.value=examples[i];
+        showScreen("analysis");
+        input.focus();
+    }
+}
 
-// ============================================================
-// بدء التحليل
-// ============================================================
-
-async function startAnalysis() {
-
-    const input = document.getElementById('symptoms');
-
-    const text = input.value.trim();
-
-    if (!text) {
-        alert('فضلاً اكتب وصف حالتك الصحية أولاً.');
+async function startAnalysis(){
+    const input=document.getElementById("symptoms");
+    const text=(input?.value||"").trim();
+    if(!text){
+        alert("اكتب وصف الحالة أولاً.");
         return;
     }
 
-    lastAnalysis.text = text;
+    lastAnalysis.symptoms=text;
+    showScreen("processing");
 
-    showScreen('processing');
+    const bar=document.getElementById("progressBar");
+    const percent=document.getElementById("progressPercent");
+    let p=0;
+    const timer=setInterval(()=>{p=Math.min(p+8,88);bar.style.width=p+"%";percent.textContent=p+"%";},120);
 
-    const bar = document.getElementById('progressBar');
-
-    if (bar) {
-        bar.style.width = '8%';
-    }
-
-    try {
-
-        const response = await fetch('/analyze', {
-
-            method: 'POST',
-
-            headers: {
-                'Content-Type': 'application/json'
-            },
-
-            body: JSON.stringify({
-                text: text
-            })
+    try{
+        const response=await fetch("/analyze",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({text})
         });
+        if(!response.ok) throw new Error("analysis failed");
+        const result=await response.json();
+        clearInterval(timer);
+        bar.style.width="100%"; percent.textContent="100%";
+        lastAnalysis.result=result;
+        setTimeout(()=>{updateSummary(result);showScreen("summary");},450);
+    }catch(error){
+        clearInterval(timer);
+        alert("تعذر تحليل الحالة. تأكدي من تشغيل الخادم.");
+        showScreen("analysis");
+    }
+}
 
+function val(v, fallback="غير محدد"){
+    if(Array.isArray(v)) return v.length?v.join("، "):fallback;
+    return (v===null||v===undefined||v==="")?fallback:String(v);
+}
 
-        if (!response.ok) {
-            throw new Error('حدث خطأ أثناء الاتصال بالخادم.');
+function updateSummary(r){
+    document.getElementById("summaryAgeGender").textContent=val(r.age_gender);
+    document.getElementById("summarySymptoms").textContent=val(r.detected_symptoms);
+    document.getElementById("summaryDuration").textContent=val(r.duration,"غير محددة");
+    document.getElementById("summaryAssociated").textContent=val(r.associated_symptoms,"لا توجد معلومات محددة");
+    document.getElementById("summaryDanger").textContent=val(r.danger_status,"لم يتم رصد علامات خطر واضحة");
+    document.getElementById("summaryPriority").textContent=`${val(r.severity)} / ${val(r.priority)}`;
+    document.getElementById("summaryPath").textContent=val(r.path);
+
+    document.getElementById("docAgeGender").textContent=val(r.age_gender);
+    document.getElementById("docDuration").textContent=val(r.duration,"غير محددة");
+    document.getElementById("docSymptoms").textContent=val(r.detected_symptoms);
+    document.getElementById("docAssociated").textContent=val(r.associated_symptoms,"لا توجد معلومات محددة");
+    document.getElementById("docDanger").textContent=val(r.danger_status);
+    document.getElementById("docPriority").textContent=`${val(r.severity)} / ${val(r.priority)}`;
+    document.getElementById("docPath").textContent=val(r.path);
+    document.getElementById("doctorSummaryText").textContent=val(r.doctor_summary,"تم تنظيم المعلومات من وصف المريض.");
+    const notice=document.getElementById("noticeBox");
+    notice.classList.toggle("danger",Array.isArray(r.danger_signs)&&r.danger_signs.length>0);
+}
+
+function openModal(type){
+    document.getElementById("modal").classList.add("show");
+    document.getElementById("modalTitle").textContent=type==="nearest"?"أقرب موعد":"حجز موعد";
+    document.getElementById("modalText").textContent=type==="nearest"?"أقرب موعد مقترح حسب المواعيد المتاحة.":"اختر الموعد المناسب لك.";
+}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function confirmAppointment(){closeModal();alert("تم تأكيد الموعد بنجاح");}
+
+async function loadDashboard(){
+    try{
+        const r=await fetch("/patterns");
+        if(!r.ok) return;
+        const data=await r.json();
+        document.getElementById("kpiTotal").textContent=data.total_cases||0;
+        document.getElementById("kpiRecent").textContent=data.recent_cases||0;
+        document.getElementById("kpiAlerts").textContent=(data.alerts||[]).length;
+        const alertBox=document.getElementById("patternAlert");
+        if((data.alerts||[]).length){
+            const a=data.alerts[0];
+            alertBox.querySelector("b").textContent="لوحظ ارتفاع في الحالات";
+            alertBox.querySelector("p").textContent=`${a.message} خلال الفترة الأخيرة مقارنة بالفترة السابقة.`;
+        }else{
+            alertBox.querySelector("b").textContent="لا توجد تنبيهات حالية";
+            alertBox.querySelector("p").textContent="لم يتم رصد نمط متزايد وفق البيانات المسجلة.";
         }
-
-
-        const result = await response.json();
-
-
-        // ====================================================
-        // تحديث شريط التحليل
-        // ====================================================
-
-        if (bar) {
-
-            bar.style.width = '35%';
-
-            setTimeout(() => {
-                bar.style.width = '65%';
-            }, 300);
-
-            setTimeout(() => {
-                bar.style.width = '85%';
-            }, 600);
-
-            setTimeout(() => {
-                bar.style.width = '100%';
-            }, 900);
-        }
-
-
-        // ====================================================
-        // حفظ نتيجة التحليل
-        // ====================================================
-
-        lastAnalysis.age =
-            result.age !== null &&
-            result.age !== undefined
-                ? result.age
-                : 'غير محدد';
-
-
-        lastAnalysis.gender =
-            result.gender ||
-            'غير محدد';
-
-
-        lastAnalysis.symptoms =
-            result.detected_symptoms &&
-            result.detected_symptoms.length
-                ? result.detected_symptoms.join('، ')
-                : 'لم يتم التعرف على أعراض محددة';
-
-
-        lastAnalysis.duration =
-            result.duration ||
-            'غير محددة';
-
-
-        lastAnalysis.associatedSymptoms =
-            result.associated_symptoms &&
-            result.associated_symptoms.length
-                ? result.associated_symptoms.join('، ')
-                : 'لا توجد أعراض مصاحبة محددة';
-
-
-        lastAnalysis.dangerSigns =
-            result.danger_signs &&
-            result.danger_signs.length
-                ? result.danger_signs.join('، ')
-                : 'لا توجد علامات خطر واضحة';
-
-
-        lastAnalysis.priority =
-            result.priority_ar ||
-            'غير محددة';
-
-
-        lastAnalysis.path =
-            result.recommended_path ||
-            'مراجعة الطبيب حسب الحالة';
-
-
-        // ====================================================
-        // تحديث الملخص
-        // ====================================================
-
-        setTimeout(() => {
-
-            updateSummary();
-
-            updateDoctorPage();
-
-            showScreen('summary');
-
-        }, 1100);
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert(
-            'حدث خطأ أثناء تحليل الحالة. تأكدي من تشغيل الخادم.'
-        );
-
-        showScreen('analysis');
-    }
+    }catch(e){}
 }
 
-
-// ============================================================
-// تحديث صفحة ملخص الحالة
-// ============================================================
-
-function updateSummary() {
-
-    const card =
-        document.getElementById('summaryData');
-
-    if (!card) {
-        return;
-    }
-
-
-    const values =
-        card.querySelectorAll('div b');
-
-
-    if (values.length >= 6) {
-
-        values[0].textContent =
-            `${lastAnalysis.age} / ${lastAnalysis.gender}`;
-
-
-        values[1].textContent =
-            lastAnalysis.symptoms;
-
-
-        values[2].textContent =
-            lastAnalysis.duration;
-
-
-        values[3].textContent =
-            lastAnalysis.associatedSymptoms;
-
-
-        values[4].textContent =
-            lastAnalysis.dangerSigns;
-
-
-        values[5].textContent =
-            lastAnalysis.path;
-    }
-}
-
-
-// ============================================================
-// تحديث صفحة الطبيب
-// ============================================================
-
-function updateDoctorPage() {
-
-    const ageGender =
-        document.getElementById('docAgeGender');
-
-    const symptoms =
-        document.getElementById('docSymptoms');
-
-    const duration =
-        document.getElementById('docDuration');
-
-    const associated =
-        document.getElementById('docAssociated');
-
-    const danger =
-        document.getElementById('docDanger');
-
-    const route =
-        document.getElementById('docRoute');
-
-
-    if (ageGender) {
-        ageGender.textContent =
-            `${lastAnalysis.age} / ${lastAnalysis.gender}`;
-    }
-
-
-    if (symptoms) {
-        symptoms.textContent =
-            lastAnalysis.symptoms;
-    }
-
-
-    if (duration) {
-        duration.textContent =
-            lastAnalysis.duration;
-    }
-
-
-    if (associated) {
-        associated.textContent =
-            lastAnalysis.associatedSymptoms;
-    }
-
-
-    if (danger) {
-        danger.textContent =
-            lastAnalysis.dangerSigns;
-    }
-
-
-    if (route) {
-        route.textContent =
-            lastAnalysis.path;
-    }
-}
-
-
-// ============================================================
-// النوافذ المنبثقة
-// ============================================================
-
-function openModal(type) {
-
-    const modal =
-        document.getElementById('modal');
-
-    const title =
-        document.getElementById('modalTitle');
-
-    const text =
-        document.getElementById('modalText');
-
-
-    modal.classList.add('show');
-
-
-    if (type === 'nearest') {
-
-        title.textContent =
-            'أقرب موعد';
-
-        text.textContent =
-            'أقرب موعد مقترح حسب المواعيد المتاحة.';
-
-    } else {
-
-        title.textContent =
-            'حجز موعد';
-
-        text.textContent =
-            'اختر الموعد المناسب لك.';
-    }
-}
-
-
-function closeModal() {
-
-    document
-        .getElementById('modal')
-        .classList.remove('show');
-}
-
-
-function confirmAppointment() {
-
-    closeModal();
-
-    alert(
-        'تم تأكيد الموعد بنجاح'
-    );
-}
+document.addEventListener("DOMContentLoaded",loadDashboard);
